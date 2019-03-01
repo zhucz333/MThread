@@ -41,7 +41,7 @@ int MThread::Stop()
 
 int MThread::Post(HandlerFunc handler)
 {
-    std::lock_guard<std::mutex> lk(m_mutexHandlerFunc);
+    std::lock_guard<std::mutex> lg(m_mutexHandlerFunc);
     m_listHandlerFunc.push_back(handler);
     m_cvHandlerFunc.notify_one();
 
@@ -50,7 +50,7 @@ int MThread::Post(HandlerFunc handler)
 
 int MThread::Dispatch(HandlerFunc handler)
 {
-    std::lock_guard<std::mutex> lk(m_mutexHandlerFunc);
+    std::lock_guard<std::mutex> lg(m_mutexHandlerFunc);
     m_listHandlerFunc.push_front(handler);
     m_cvHandlerFunc.notify_one();
 
@@ -62,10 +62,13 @@ void MThread::Worker()
     while (m_bStart) {
         HandlerFunc func;
         {
-            std::unique_lock<std::mutex> lk(m_mutexHandlerFunc);
-            if (!m_cvHandlerFunc.wait_for(lk, std::chrono::milliseconds(100), [this]{return !m_listHandlerFunc.empty();})) {
-	    		continue;
+            std::unique_lock<std::mutex> ul(m_mutexHandlerFunc);
+			if (m_listHandlerFunc.empty()) {
+				if (!m_cvHandlerFunc.wait_for(ul, std::chrono::milliseconds(100), [this] {return !m_listHandlerFunc.empty(); })) {
+					continue;
+				}
 			}
+
             func = m_listHandlerFunc.front();
             m_listHandlerFunc.pop_front();
         }
