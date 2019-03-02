@@ -16,9 +16,9 @@
 ## 3 MThread库的编译及使用
 ### 3.1 编译
 <br>MThread库提供windows和Linux平台的生成方法，具体如下： </br>
-<br>Linux平台：cd MThread/src && make； </br>
-<br>Windows平台：直接打开MThread\vs2017\MThread\MThread.sln工程文件即可编译； </br>
-<br>编译的lib库文件在MThread/lib中，头文件在MThread/include中； </br>
+<br>Linux平台：cd MThread/src && make && make test； </br>
+<br>Windows平台：直接打开MThread\vs2017\MThread\MThread.sln工程文件即可编译lib和测试样例； </br>
+<br>编译的lib库文件在MThread/lib中，头文件在MThread/include中，测试样例在MThread/bin中； </br>
 ### 3.2 使用
 <br>Linux平台：</br>
 <br>源代码中#include "MThread.h" 和 #include "Strand.h" </br>
