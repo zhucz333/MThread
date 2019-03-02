@@ -1,6 +1,6 @@
 ## MThread库概述
-<br MThread（Multi-Thread Management）库是对C++标准库（C++11后）中的std::thread和std::function进行再封装，实现线程相关操作的简单和易用 />
-<br 本库的主要特点包括异步线程函数的创建和执行，异步函数的执行优先级机制，异步函数的串行化机制。/>
+<br> MThread（Multi-Thread Management）库是对C++标准库（C++11后）中的std::thread和std::function进行再封装，实现线程相关操作的简单和易用 </br>
+<br> 本库的主要特点包括异步线程函数的创建和执行，异步函数的执行优先级机制，异步函数的串行化机制。</br>
 
 ## MThread库主要功能及说明
 主要功能包括： 
