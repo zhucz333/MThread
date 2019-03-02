@@ -1,6 +1,6 @@
 ## MThread库概述
 <br> MThread（Multi-Thread Management）库是对C++标准库（C++11后）中的std::thread和std::function进行再封装，实现线程相关操作的简单和易用。 </br>
-<br> 和使用标准库中的的std::thread库相比，本库的主要贡献是解除了线程和线程函数的静态绑定关系，即在使用标准库中的std::thread创建线程时，需要指定线程函数，并且在线程结束前，不可以绑定别的线程函数。使用本库后，可以动态创建异步线程函数并Post到本线程组中，由线程组来调用线程函数，增强了系统实现的灵活性。</br>
+<br> 和使用标准库中的的std::thread库相比，本库的主要贡献是解除了线程和线程函数的绑定关系，即在使用标准库中的std::thread创建线程时，需要指定线程函数，并且在线程结束前，不可以绑定别的线程函数。使用本库后，可以动态创建异步线程函数并Post到本线程组中，由线程组来调用线程函数，增强了系统实现的灵活性。</br>
 <br> 同时，本库还实现了异步线程函数的优先级机制和线程函数的串行化机制。其中，线程函数的优先级机制中，优先级高的线程函数优先执行，可以满足特定的应用场景需求；线程函数的串行化机制中，可以提供线程函数的串行化执行，同一时间只有一个线程函数可以被执行。</br>
 
 ## MThread库主要功能及说明
@@ -14,4 +14,16 @@
   <br> 线程函数之间如果需要串行化执行，使用Strand即可，Strand可以保证同一时间只有其中的一个异步函数被执行，但是不保证异步函数的执行顺序。</br>
 
 ## MThread库的编译及使用
-MThread库提供windows和Linux平台的生成方法，
+### 编译
+<br>MThread库提供windows和Linux平台的生成方法，具体如下： </br>
+<br>Linux平台：cd MThread/src && make； </br>
+<br>Windows平台：直接打开MThread\vs2017\MThread\MThread.sln工程文件即可编译； </br>
+<br>编译的lib库文件在MThread/lib中，头文件在MThread/include中； </br>
+### 使用
+<br>Linux平台：</br>
+<br>源代码中#include "MThread.h" 和 #include "Strand.h" </br>
+<br>编译时 -lMThread即可 ；</br>
+<br />
+<br>Windows平台：</br>
+<br>源代码中#include "MThread.h" 和 #include "Strand.h" </br>
+<br>编译时静态链接MThread.lib即可。 </br>
