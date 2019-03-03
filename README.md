@@ -53,24 +53,24 @@ public:
 <br>创建线程组：<br />
 <br>
 ```cpp
-    MThread threads;  
-    threads.Start(3);  
-    Strand strand(threads);  
+MThread threads;  
+threads.Start(3);  
+Strand strand(threads);  
 ```
 <br />
 <br>投递函数到线程组中：<br />
 <br>
 ```cpp
-    threads.Post(std::bind(&A::print, &a));  
-    threads.Post(std::bind(&A::printi, &a, 1));  
-    threads.Post(std::bind(&A::printi, &a, 2));  
-    threads.Post(std::bind(&A::printi, &a, 3));  
-    threads.Dispatch(std::bind(&A::printi, &a, 4));  
-    strand.Post(std::bind(&A::print, &a));  
-    strand.Post(std::bind(&A::printi, &a, 5));  
-    strand.Post(std::bind(&A::printi, &a, 6));  
-    strand.Post(std::bind(&A::printi, &a, 7));  
-    strand.Post(std::bind(&A::printi, &a, 8));  
-    strand.Dispatch(std::bind(&A::printi, &a, 9)); 
+threads.Post(std::bind(&A::print, &a));  
+threads.Post(std::bind(&A::printi, &a, 1));  
+threads.Post(std::bind(&A::printi, &a, 2));  
+threads.Post(std::bind(&A::printi, &a, 3));  
+threads.Dispatch(std::bind(&A::printi, &a, 4));  
+strand.Post(std::bind(&A::print, &a));  
+strand.Post(std::bind(&A::printi, &a, 5));  
+strand.Post(std::bind(&A::printi, &a, 6));  
+strand.Post(std::bind(&A::printi, &a, 7));  
+strand.Post(std::bind(&A::printi, &a, 8));  
+strand.Dispatch(std::bind(&A::printi, &a, 9)); 
 ```
 <br />
