@@ -29,7 +29,7 @@
 <br>源代码中#include "MThread.h" 和 #include "Strand.h" </br>
 <br>编译时静态链接MThread.lib即可。 </br>
 ### 3.3 Example
-<br>创建线程函数print() printi()：</br>
+<br>*创建线程函数print() printi()：</br>
 <br>
 class A  
 {  
@@ -57,19 +57,18 @@ public:
 } ;  
 <br />
 <br>
-创建线程组：
+*创建线程组：
     MThread threads;  
     threads.Start(3);  
     Strand strand(threads);  
 <br />
 <br>
-投递函数到线程组中：
+*投递函数到线程组中：
     threads.Post(std::bind(&A::print, &a));  
     threads.Post(std::bind(&A::printi, &a, 1));  
     threads.Post(std::bind(&A::printi, &a, 2));  
     threads.Post(std::bind(&A::printi, &a, 3));  
     threads.Dispatch(std::bind(&A::printi, &a, 4));  
-
     strand.Post(std::bind(&A::print, &a));  
     strand.Post(std::bind(&A::printi, &a, 5));  
     strand.Post(std::bind(&A::printi, &a, 6));  
