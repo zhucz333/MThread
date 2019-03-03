@@ -1,7 +1,8 @@
 ## 1 MThread库概述
 <br> MThread（Multi-Thread Management）库是对C++标准库（C++11后）中的std::thread和std::function进行再封装，实现线程相关操作的简单和易用。 </br>
-<br> 和使用标准库中的的std::thread库相比，本库的主要贡献是解除了线程和线程函数的绑定关系，即在使用标准库中的std::thread创建线程时，需要指定线程函数，并且在线程结束前，不可以绑定别的线程函数。使用本库后，可以动态创建异步线程函数并Post到本线程组中，由线程组来调用线程函数，增强了系统实现的灵活性。</br>
+<br> 和使用标准库中的的std::thread库相比，本库的主要贡献是解除了线程和线程函数的绑定关系，即在使用标准库中的std::thread创建线程时，需要指定线程函数，并且在线程结束前，不可以绑定别的线程函数。使用本库后，可以动态创建异步线程函数并Post/Dispatch到本线程组中，由线程组来调用异步线程函数，创建函数的线程和执行函数的线程是相互隔离的，是生产者和消费者的关系。</br>
 <br> 同时，本库还实现了异步线程函数的优先级机制和线程函数的串行化机制。其中，线程函数的优先级机制中，优先级高的线程函数优先执行，可以满足特定的应用场景需求；线程函数的串行化机制中，可以提供线程函数的串行化执行，同一时间只有一个线程函数可以被执行。</br>
+<br> 在功能上，MThread库和boost::asio::ioservice类似，相比而言MThread库优势是接口更简单、实现更紧凑、使用更方便。</br>
 
 ## 2 MThread库主要功能及说明
   ### 2.1 线程组创建、销毁
@@ -27,3 +28,52 @@
 <br>Windows平台：</br>
 <br>源代码中#include "MThread.h" 和 #include "Strand.h" </br>
 <br>编译时静态链接MThread.lib即可。 </br>
+### 3.3 Example
+<br>创建线程函数print() printi()：</br>
+<br>
+class A
+{
+public:
+    void print() {
+        printf("printf test!\n");
+        printf("printf test! end!\n");
+    }
+
+	void printi(int i) {
+		printf("printf int test %d\n", i);
+#ifdef _WIN32
+		Sleep(1000);
+#else
+		sleep(1);
+#endif // _WIN32
+		printf("printf int test %d ing\n", i);
+#ifdef _WIN32
+		Sleep(1000);
+#else
+		sleep(1);
+#endif // _WIN32
+		printf("printf int test %d end\n", i);
+	}
+} ;
+<br />
+<br>
+创建线程组：
+    MThread threads;
+    threads.Start(3);
+    Strand strand(threads);
+<br />
+投递函数到线程组中：
+    threads.Post(std::bind(&A::print, &a));
+    threads.Post(std::bind(&A::printi, &a, 1));
+    threads.Post(std::bind(&A::printi, &a, 2));
+    threads.Post(std::bind(&A::printi, &a, 3));
+    threads.Dispatch(std::bind(&A::printi, &a, 4));
+
+    strand.Post(std::bind(&A::print, &a));
+    strand.Post(std::bind(&A::printi, &a, 5));
+    strand.Post(std::bind(&A::printi, &a, 6));
+    strand.Post(std::bind(&A::printi, &a, 7));
+    strand.Post(std::bind(&A::printi, &a, 8));
+    strand.Dispatch(std::bind(&A::printi, &a, 9));
+    
+<br />
