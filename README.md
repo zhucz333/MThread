@@ -29,41 +29,41 @@
 <br>源代码中#include "MThread.h" 和 #include "Strand.h" </br>
 <br>编译时静态链接MThread.lib即可。 </br>
 ### 3.3 Example
-*创建线程函数print() printi()：
+<br>创建线程函数print() printi()：<br />
 <br>
 class A  
 {  
 public:  
-    void print() {  
-        printf("printf test!\n");  
-        printf("printf test! end!\n");  
-    }  
-    void printi(int i) {  
-	printf("printf int test %d\n", i);  
-	sleep(1);  
-	printf("printf int test %d ing\n", i);  
-	sleep(1);  
-	printf("printf int test %d end\n", i);  
-    }  
+	void print() {  
+	printf("printf test!\n");  
+	printf("printf test! end!\n");  
+	}  
+	void printi(int i) {  
+		printf("printf int test %d\n", i);  
+		sleep(1);  
+		printf("printf int test %d ing\n", i);  
+		sleep(1);  
+		printf("printf int test %d end\n", i);  
+	}  
 } ;  
 <br />
-*创建线程组：
+<br>创建线程组：<br />
 <br>
-    MThread threads;  
-    threads.Start(3);  
-    Strand strand(threads);  
+	MThread threads;  
+	threads.Start(3);  
+	Strand strand(threads);  
 <br />
-*投递函数到线程组中：
+<br>投递函数到线程组中：<br />
 <br>
-    threads.Post(std::bind(&A::print, &a));  
-    threads.Post(std::bind(&A::printi, &a, 1));  
-    threads.Post(std::bind(&A::printi, &a, 2));  
-    threads.Post(std::bind(&A::printi, &a, 3));  
-    threads.Dispatch(std::bind(&A::printi, &a, 4));  
-    strand.Post(std::bind(&A::print, &a));  
-    strand.Post(std::bind(&A::printi, &a, 5));  
-    strand.Post(std::bind(&A::printi, &a, 6));  
-    strand.Post(std::bind(&A::printi, &a, 7));  
-    strand.Post(std::bind(&A::printi, &a, 8));  
-    strand.Dispatch(std::bind(&A::printi, &a, 9));  
+	threads.Post(std::bind(&A::print, &a));  
+	threads.Post(std::bind(&A::printi, &a, 1));  
+	threads.Post(std::bind(&A::printi, &a, 2));  
+	threads.Post(std::bind(&A::printi, &a, 3));  
+	threads.Dispatch(std::bind(&A::printi, &a, 4));  
+	strand.Post(std::bind(&A::print, &a));  
+	strand.Post(std::bind(&A::printi, &a, 5));  
+	strand.Post(std::bind(&A::printi, &a, 6));  
+	strand.Post(std::bind(&A::printi, &a, 7));  
+	strand.Post(std::bind(&A::printi, &a, 8));  
+	strand.Dispatch(std::bind(&A::printi, &a, 9));  
 <br />
