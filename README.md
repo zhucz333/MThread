@@ -1,9 +1,7 @@
 ## 1 MThread库概述
-<br> MThread（Multi-Thread Management）库是对C++标准库（C++11后）中的`std::thread`和`std::function`进行再封装，实现线程相关操作的简单和易用。 </br>
+<br> MThread（Multi-Thread Management）库是对C++标准库（C++11后）中的`std::thread`和`std::function`进行再封装，特点是接口简单、实现紧凑、使用方便。 </br>
 <br> 和使用标准库中的的std::thread库相比，本库的主要贡献是解除了线程和线程函数的绑定关系，即在使用标准库中的std::thread创建线程时，需要指定线程函数，并且在线程结束前，不可以绑定别的线程函数。使用本库后，可以动态创建异步线程函数并Post/Dispatch到本线程组中，由线程组来调用异步线程函数，创建函数的线程和执行函数的线程是相互隔离的，是生产者和消费者的关系。</br>
 <br> 同时，本库还实现了异步线程函数的`优先级`机制和线程函数的`串行化`机制。其中，线程函数的优先级机制中，优先级高的线程函数优先执行，可以满足特定的应用场景需求；线程函数的串行化机制中，可以提供线程函数的串行化执行，同一时间只有一个线程函数可以被执行。</br>
-<br> 在功能上，MThread库和`boost::asio::ioservice`类似，相比而言MThread库优势是接口更简单、实现更紧凑、使用更方便。</br>
-
 ## 2 MThread库主要功能及说明
   ### 2.1 线程组创建、销毁
   <br> 通过`MThread::Start(int nThreadNum)`创建并运行nThreadNum个线程的线程组，通过MThread::Stop()结束线程组运行；</br>
