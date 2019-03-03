@@ -47,6 +47,8 @@ public:
 	printf("printf int test %d end\n", i);
     }
 } ;  
+```
+```c
 int main()  
 {  
     MThread threads;  
