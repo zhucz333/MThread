@@ -29,7 +29,7 @@
 <br>源代码中#include "MThread.h" 和 #include "Strand.h" </br>
 <br>编译时静态链接MThread.lib即可。 </br>
 ### 3.3 Example
-<br>
+<br>源码：<br />
 ```cpp
 class A
 {
@@ -74,4 +74,4 @@ int main()
     return 0;  
 }  
 ```
-<br />
+<br><br />
