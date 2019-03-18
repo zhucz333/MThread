@@ -12,4 +12,4 @@ cd $buildDir
 
 echo Setup Linux 32 bit Release Solution in $(pwd)
 
-cmake -DUSE_32BITS=ON -DCMAKE_BUILD_TYPE=Release ..
+cmake -DUSE_32BITS=ON -DCMAKE_BUILD_TYPE=Release ../MThread
