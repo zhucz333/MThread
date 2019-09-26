@@ -1,9 +1,10 @@
 #include "MThread.h"
 
-MThread::MThread() : m_mutexHandlerFunc()
+MThread::MThread(ThreadInitFunc init) : m_mutexHandlerFunc()
 {
     m_bStart = false;
     m_nThreadNum = 1;
+	m_pfnInitFunc = init;
 }
 
 MThread::~MThread()
@@ -41,24 +42,30 @@ int MThread::Stop()
 
 int MThread::Post(HandlerFunc handler)
 {
-    std::lock_guard<std::mutex> lg(m_mutexHandlerFunc);
-    m_listHandlerFunc.push_back(handler);
-    m_cvHandlerFunc.notify_one();
+	{
+		std::unique_lock<std::mutex> ul(m_mutexHandlerFunc);
+		m_listHandlerFunc.push_back(handler);
+	}
+	m_cvHandlerFunc.notify_one();
 
     return 0;
 }
 
 int MThread::Dispatch(HandlerFunc handler)
 {
-    std::lock_guard<std::mutex> lg(m_mutexHandlerFunc);
-    m_listHandlerFunc.push_front(handler);
-    m_cvHandlerFunc.notify_one();
+	{
+		std::unique_lock<std::mutex> ul(m_mutexHandlerFunc);
+		m_listHandlerFunc.push_front(handler);
+	}
+	m_cvHandlerFunc.notify_one();
 
     return 0;
 }
 
 void MThread::Worker()
 {
+	m_pfnInitFunc();
+
     while (m_bStart) {
         HandlerFunc func;
         {

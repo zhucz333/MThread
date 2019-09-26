@@ -10,18 +10,20 @@ Strand::~Strand()
 
 int Strand::Post(HandlerFunc handler)
 {
-    m_tWorkers.Post(std::bind(&Strand::Warp, this, handler));
+	HandlerFunc func = std::bind(&Strand::Warp, this, handler);
+    m_tWorkers.Post(func);
     return 0;
 }
 
 int Strand::Dispatch(HandlerFunc handler)
 {
-    m_tWorkers.Dispatch(std::bind(&Strand::Warp, this, handler));
+	HandlerFunc func = std::bind(&Strand::Warp, this, handler);
+    m_tWorkers.Dispatch(func);
     return 0;
 }
 
 void Strand::Warp(HandlerFunc handler)
 {
-    std::lock_guard<std::mutex> lk(m_mutexHandlerFunc);
+    std::unique_lock<std::mutex> ul(m_mutexHandlerFunc);
     handler();
 }
