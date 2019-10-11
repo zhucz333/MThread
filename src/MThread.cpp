@@ -13,6 +13,10 @@ MThread::~MThread()
 
 int MThread::Start(int threadNum)
 {
+	if (m_bStart) {
+		return 0;
+	}
+
     if (0 == threadNum) {
         threadNum = std::thread::hardware_concurrency();
     }
@@ -30,6 +34,10 @@ int MThread::Start(int threadNum)
 
 int MThread::Stop()
 {
+	if (!m_bStart) {
+		return 0;
+	}
+
     m_bStart = false;
     
     for (auto var : m_listThread) {
@@ -38,6 +46,16 @@ int MThread::Stop()
     }
 
     return 0;
+}
+
+int MThread::Clear()
+{
+	{
+		std::unique_lock<std::mutex> ul(m_mutexHandlerFunc);
+		m_listHandlerFunc.clear();
+	}
+
+	return 0;
 }
 
 int MThread::Post(HandlerFunc handler)

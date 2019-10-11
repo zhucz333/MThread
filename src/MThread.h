@@ -28,6 +28,7 @@ public:
 	static void ThreadInit() {};
     int Start(int threadNum = 1);
     int Stop();
+	int Clear();
     int Post(HandlerFunc handler);
     int Dispatch(HandlerFunc handler);
 
